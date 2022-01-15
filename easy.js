@@ -1,4 +1,4 @@
-var assert = require("assert")
+var assert = require("assert");
 // Given an array of numbers, return a new array so that positive and negative
 // numbers alternate. You can assume that 0 is a positive number. Within the
 // positive and negative numbers, you must keep their relative order. You are 
@@ -30,9 +30,40 @@ var assert = require("assert")
 // Output numArray: []
 // Explanation: Empty array...
 
+// Function to check whether array still consists of subsequent integeers with the same sign (e.g. ...2, 5, 7... or ...-3, -12, -9...)
+function checkArray(numArray) {
+    for (let i = 0; i + 1 < numArray.length; i++) {
+        if ((numArray[i] >= 0 && numArray[i+1] >= 0) || (numArray[i] < 0 && numArray[i+1] < 0)) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+// Recursive function to swap the indexes of integers with different signs in the array (e.g. -1, 5 -> 5, -1)
+function alternate(numArray, num) {
+    
+    if (checkArray(numArray) == 0) return numArray;
+    if (num == numArray.length && checkArray(numArray) == 1) alternate(numArray, 0)
+    
+    n1 = numArray[num];
+    n2 = numArray[num+1];
+    if ((numArray[num] >= 0 && numArray[num+1] < 0) || 
+        (numArray[num] < 0 && numArray[num+1] >= 0)) {
+        numArray[num] = n2;
+        numArray[num+1] = n1;
+        num += 2;
+        alternate(numArray, num);
+    } else {
+        num++;
+        alternate(numArray, num);
+    }
+    return numArray;
+}
+
 const altNumbers = (numArray) => {
-    // TODO: COMPLETE THIS FUNCTION
-    return [];
+    if (numArray == []) return numArray;
+    return alternate(numArray, 0);
 }
 
 module.exports = { altNumbers } // Do not modify this line
